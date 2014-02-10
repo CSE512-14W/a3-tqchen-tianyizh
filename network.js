@@ -59,7 +59,7 @@ d3.json( "data/miserable.json", function(error, gdata) {
     var helper = new mhelper( gdata );    
 
     var update = function( is_init ){
-        graph = helper.getgraph();
+        var graph = helper.getgraph();
         force
             .nodes( graph.nodes )
             .links( graph.links )
