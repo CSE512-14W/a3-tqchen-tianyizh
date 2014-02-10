@@ -94,7 +94,7 @@ d3.json( "data/miserable.json", function(error, gdata) {
             .on("dblclick", dblClickNode );
         node
             .attr( "r", 5 )
-            .style("fill", function(d) { return colorList[ parseInt(d.group) ]; });
+            .style("fill", function(d) { return colorList[ d.group ]; });
         if( !is_init ) return;
         // the following only needs to be called during initialization
         // start show the graph
