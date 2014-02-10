@@ -62,13 +62,15 @@ d3.json( "data/miserable.json", function(error, gdata) {
         var graph = helper.getgraph();
         force
             .nodes( graph.nodes )
-            .links( graph.links )
+            .links( graph.links );
+            
         var link = svg.selectAll(".link")
             .data( graph.links );
         link.exit().remove();
         link = link
             .enter().append("line")
             .attr( "class", "link" );
+    
         var node = svg.selectAll(".node")
             .data( graph.nodes );
         node.exit().remove();
