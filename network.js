@@ -13,12 +13,22 @@ for( var i = 0; i < 20; i ++ ){
 var force = d3.layout.force()
     .charge( function (d){ if( d.fixed ) return -2000; else return -200; } )
     .linkDistance( 30 )
-    .size( [width, height] );
+    .size( [width, height] )
+    .on("tick", function() {
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+            
+            node.attr("cx", function(d) { return d.x; } )
+                .attr("cy", function(d) { return d.y; } )
+        });
 
 var svg = d3.select("#netgraph").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+var link = svg.selectAll(".link");
 
 //---------tool tips------------
 var tooltip = d3.tip()
@@ -62,43 +72,32 @@ d3.json( "data/miserable.json", function(error, gdata) {
         var graph = helper.getgraph();
         force
             .nodes( graph.nodes )
-            .links( graph.links );
-            
-        var link = svg.selectAll(".link")
-            .data( graph.links );
+            .links( graph.links )
+            .start()
+        link = link.data( graph.links );
+        
         link.exit().remove();
-        link = link
-            .enter().append("line")
+        link.enter().append("line")
             .attr( "class", "link" );
     
-        var node = svg.selectAll(".node")
-            .data( graph.nodes );
+        node = node.data( graph.nodes );
+        
         node.exit().remove();
-        node = node
+        node
             .enter().append("circle")
             .attr( "class", "node" )
             .attr( "r", 5 )
             .style("fill", function(d) { return colorList[ d.group ]; })
-            .call( force.drag );
-
-        force.start();
+            .call( force.drag )
+            .on("mouseover", showNodeInfo )
+            .on("mouseout", hideNodeInfo )
+            .on("dblclick", dblClickNode );
+        
         if( !is_init ) return;
         // the following only needs to be called during initialization
         // start show the graph
-        force.on("tick", function() {
-            link.attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
-            
-            node.attr("cx", function(d) { return d.x; } )
-                .attr("cy", function(d) { return d.y; } )
-        });
                  
         // add event listeners
-        node.on("mouseover", showNodeInfo )
-            .on("mouseout", hideNodeInfo )
-            .on("dblclick", dblClickNode );
         // genere change
         d3.selectAll("#genre_select")
             .on( "change", function (){
