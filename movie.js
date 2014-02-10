@@ -6,7 +6,7 @@ function mhelper( graph ){
     this.graph = graph;
     this.rate_min = 0;
     this.rate_max = 10;
-    this.fgroup   = 2;
+    this.fgroup   = 0;
 }
 
 mhelper.prototype = {
