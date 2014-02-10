@@ -88,13 +88,13 @@ d3.json( "data/miserable.json", function(error, gdata) {
         node
             .enter().append("circle")
             .attr( "class", "node" )
-            .attr( "r", 5 )
-            .style("fill", function(d) { return colorList[ parseInt(d.group) ]; })
             .call( force.drag )
             .on("mouseover", showNodeInfo )
             .on("mouseout", hideNodeInfo )
             .on("dblclick", dblClickNode );
-        
+        node
+            .attr( "r", 5 )
+            .style("fill", function(d) { return colorList[ parseInt(d.group) ]; });
         if( !is_init ) return;
         // the following only needs to be called during initialization
         // start show the graph
