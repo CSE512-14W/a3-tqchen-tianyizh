@@ -8,6 +8,8 @@ function mhelper( graph ){
     this.rate_max = 10;
     this.fgroup   = 0;
     this.maxknn   = 2;
+    this.ratemax = 10;
+    this.ratemin = 0;
     this.knntype  = 'Jaccard';
     this.sizetype = 'rtNumReview';
     this.gmap = {}
@@ -24,6 +26,10 @@ mhelper.prototype = {
     chk_fgroup: function( d ){
         return !this.gmap[ d.gid ];
     },
+    chk_rate: function( d ){
+        var r = d.rtAvgRating;
+        return r >= d.ratemin && r<= d.ratemax
+    },
     isFiltered: function( d ){
         if( this.chk_fgroup( d ) ) return true;
         return false;
@@ -31,8 +37,12 @@ mhelper.prototype = {
     updateknn: function( v ){
         this.maxknn = v;
     },
+    updateratefilter: function( rmin, rmax ){
+        this.ratemin = rmin;
+        this.ratemax = rmax;
+    },
     getcharge: function( d ){
-        return -100*this.maxknn;
+        return -50*this.maxknn;
     },
     num_genre: function(){
         return this.graph.genre.length;
