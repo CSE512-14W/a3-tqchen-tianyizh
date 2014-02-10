@@ -5,7 +5,8 @@ var width = 860;
 var height = 800;
 var barWidth = 90;
 var barHeight = 20;
-
+var brushKNNWidth = 90;
+var brushKNNHeight = 20;
 var color = d3.scale.category20();
 var colorList = [];
 for( var i = 0; i < 20; i ++ ){
@@ -69,6 +70,35 @@ var dblClickNode = function( d ){
     d.py = d.y = height / 2;
     force.start();
 }
+
+// brush 
+var xknn = d3.scale.linear()
+    .domain([0, 50])
+    .range([0, brushKNNWidth])
+    .clamp(true);
+var brushKNN = d3.svg.brush()
+    .x(xknn)
+    .extent([0, 0]);
+
+var brushKNNGraph = d3.select("#knn_brush").append("svg")
+    .attr("width", brushKNNWidth )
+    .attr("height", brushKNNHeight )
+    .append("g")
+    .attr("transform", "translate( 2,2 )");
+
+brushKNNGraph.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + brushKNNHeight/ 2 + ")")
+    .call( d3.svg.axis()
+           .scale(xknn)
+           .orient("bottom")
+           .tickFormat(function(d) { return d; })
+           .tickSize(0)
+           .tickPadding(12));
+var sliderKNN = svg.append("g")
+    .attr("class", "slider")
+    .call(brushKNN);
+
 
 //------------------------------------
 // helper functions
