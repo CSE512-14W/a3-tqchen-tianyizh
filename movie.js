@@ -23,7 +23,6 @@ mhelper.prototype = {
     },
     // get a filtered graph
     getgraph: function(){
-        return this.graph;
         var nodes = this.graph.nodes;
         var res = { "nodes":[], "links":[] };
         var nmap = {}
