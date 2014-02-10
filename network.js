@@ -29,6 +29,7 @@ var svg = d3.select("#netgraph").append("svg")
     .attr("height", height);
 
 var link = svg.selectAll(".link");
+var node = svg.selectAll(".node");
 
 //---------tool tips------------
 var tooltip = d3.tip()
