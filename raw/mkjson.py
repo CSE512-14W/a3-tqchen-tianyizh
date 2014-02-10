@@ -54,8 +54,10 @@ def loadmeta():
         dat = meta[ mid ]
         dat["title"] = '\"'+arr[1].strip()+'\"'
         dat["year" ] = arr[5].strip()
-        dat["rtAvgRating"] = arr[7].strip()
-        dat["rtNumReview"] = arr[8].strip()        
+        
+        #dat["rtAvgRating"] = "\'"+arr[7].strip()+'\"'
+        #dat["rtNumReview"] = "\'"+arr[8].strip()+"\'"
+        
         if nfield == None:
             print dat
             nfield = len(arr)
@@ -122,18 +124,18 @@ def getknn( fname, fweight, fmap, topn ):
             weight = float( ewt[i+2] )
             if target not in fmap:
                 continue
-            if source > target:
-                target, source = source, target
+            #if source > target:
+            #target, source = source, target
             key = (source, target)
             if key not in edge:
-                edge[ key ] = weight
+                edge[ key ] = (ncnt,weight)
             ncnt += 1
             if ncnt >= topn:
                 break
     return edge
 
-topnode = 1000;
-topedge = 5;
+topnode = 150;
+topedge = 50;
 
 meta, gmap = loadmeta()
 fmap = remap_meta( meta, topnode )
@@ -160,7 +162,7 @@ fo = open( '../data/movie.json', 'w' )
 fo.write('{\n');
 # genere
 fo.write('  \"genre\":[\n')
-resg = ',\n'.join( ('    {\"genre\":%s, \"count\":%d, \"gid\":%d}' % (k,v[0],v[1]) ) for k,v in gmap.iteritems() )
+resg = ',\n'.join( ('    {\"name\":\"%s\", \"count\":%d, \"gid\":%d}' % (k,v[0],v[1]) ) for k,v in gmap.iteritems() )
 fo.write( resg )
 fo.write('\n  ],\n');
 
@@ -172,15 +174,15 @@ fo.write('\n  ],\n');
 
 # edgep
 fo.write('  \"edgep\":[\n')
-redgep = ',\n'.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}' % (k[0],k[1],v) ) for k,v in edgep.iteritems() )
+redgep = ',\n'.join( ('    {\"source\":%d, \"target\":%d, "knn":%d, \"value\":\"%f\"}' % (k[0],k[1],v[0],v[1]) ) for k,v in edgep.iteritems() )
 fo.write( redgep )
 fo.write('\n  ],\n');
 
 # edgep
-fo.write('  \"edgen\"[\n')
-redgen = ',\n'.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}' % (k[0],k[1],v) ) for k,v in edgen.iteritems() )
+fo.write('  \"edgen\":[\n')
+redgen = ',\n'.join( ('    {\"source\":%d, \"target\":%d, "knn":%d, \"value\":\"%f\"}' % (k[0],k[1],v[0],v[1]) ) for k,v in edgen.iteritems() )
 fo.write( redgen )
-fo.write('  ]\n');
+fo.write('\n  ]\n');
 
 fo.write('}\n');
 

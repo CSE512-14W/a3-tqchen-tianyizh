@@ -36,9 +36,10 @@ var tooltip = d3.tip()
     .attr("class", "d3-tip")
     .offset( [-10, 0] )
     .html( function( d ){
-        var content = "<span>" + "Director: " + d.name + "</span></br></br>";
-        content += "<span>" + "Rating: " + d.group +"</span>";
-        content += "<span>" + "Color: " + colorList[d.group] +"</span>";
+        var content = "<span>" + "" + d.title + "</span></br></br>";
+        content += "<span>" + "Rating: " + d.avgRating +"</span></br></br>";
+        content += "<span>" + "Director: " + d.director +"</span>";
+
         return content;
     } );
 svg.call( tooltip )
@@ -67,7 +68,7 @@ var dblClickNode = function( d ){
 // helper functions
 //------------------------------------
 
-d3.json( "data/miserable.json", function(error, gdata) {
+d3.json( "data/movie.json", function(error, gdata) {
     var helper = new mhelper( gdata );    
 
     var update = function( is_init ){
@@ -94,16 +95,16 @@ d3.json( "data/miserable.json", function(error, gdata) {
             .on("dblclick", dblClickNode );
         node
             .attr( "r", 5 )
-            .style("fill", function(d) { return colorList[ d.group ]; });
+            .style("fill", function(d) { return colorList[ d.gid ]; });
         if( !is_init ) return;
         // the following only needs to be called during initialization
         // start show the graph
                  
         // add event listeners
         // genere change
-        d3.selectAll("#genre_select")
+        d3.selectAll("#knn_select")
             .on( "change", function (){
-                helper.set_fgroup( parseInt( this.value ) );
+                helper.knntype = this.value;
                 force.stop();
                 update( false );
             });
