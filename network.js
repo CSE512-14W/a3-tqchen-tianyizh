@@ -2,7 +2,7 @@
 // no existing data yet, use TODO to mark things to be done
 
 var width = 860;
-var height = 800;
+var height = 700;
 var barWidth = 90;
 var barHeight = 20;
 
