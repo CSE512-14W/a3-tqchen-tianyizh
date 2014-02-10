@@ -79,14 +79,17 @@ def loadmeta():
         dat = meta[ mid ]
         if 'genre' not in dat:
             gtype = arr[1].strip()
-            dat[ 'genre' ] = "\""+gtype+'\"'
-            ncnt += 1
+            if gtype == 'Short':
+                continue
             if gtype not in gmap:
-                gmap[ gtype ] = 1
+                gmap[ gtype ] = (1, len(gmap))
             else:
-                gmap[ gtype ] += 1
+                gmap[ gtype ] = (gmap[gtype][0]+1, gmap[gtype][1])
 
-    assert ncnt == len( meta )
+            dat[ 'genre' ] = "\""+gtype+'\"'
+            dat[ 'gid' ] = gmap[ gtype ][ 1 ]
+            ncnt += 1
+    print 'ncnt=%d, dat=%d' % (ncnt, len(meta))        
     fi.close()
 
     print 'skip %d movies' % scnt
@@ -94,7 +97,7 @@ def loadmeta():
 
 def remap_meta( meta, topn ):
     fmap = {}
-    res = sorted( meta.values(), key = lambda x: -x['numRating'] ) 
+    res = [ d for d in sorted( meta.values(), key = lambda x: -x['numRating'])  if 'gid' in d ]
     for d in res[ 0 : min(topn,len(res)) ]:
         fmap[ d['nid'] ] = d
     return fmap
@@ -133,32 +136,52 @@ topnode = 1000;
 topedge = 5;
 
 meta, gmap = loadmeta()
-print gmap
 fmap = remap_meta( meta, topnode )
+# remap gmap
+gcnt = {}
+for d in fmap.values():
+    if d['gid'] not in gcnt:
+        gcnt[ d['gid'] ] = 1
+    else:
+        gcnt[ d['gid'] ] += 1  
+ggmap = {}
+for k, v in gmap.iteritems():
+    if v[1] in gcnt:
+        ggmap[ k ] = (  gcnt[v[1]], v[1] )
+gmap = ggmap
+print gmap
+
 edgep = getknn( 'moviedata/P100NNMovieID.csv', 'moviedata/P100NNEdgeWeight.csv', fmap, topedge )
 edgen = getknn( 'moviedata/100NNmovieID.csv', 'moviedata/100NNEdgeWeight.csv', fmap, topedge )
 print '%d nodes, %d edgep, %d edgen' %(len(fmap), len(edgep),len(edgen))
+
 # write data 
 fo = open( '../data/movie.json', 'w' )
 fo.write('{\n');
+# genere
+fo.write('  \"genre\":[\n')
+resg = ',\n'.join( ('    {\"genre\":%s, \"count\":%d, \"gid\":%d}' % (k,v[0],v[1]) ) for k,v in gmap.iteritems() )
+fo.write( resg )
+fo.write('\n  ],\n');
 
 nodes = sorted( fmap.values(), key = lambda x: -x['numRating'] ) 
-res = ','.join( ('    {%s}\n' % ','.join( '\"%s\":%s' %(k, str(v)) for k, v in d.iteritems() )) for d in nodes )
-fo.write('  nodes:[\n')
+res = ',\n'.join( ('    {%s}' % ','.join( '\"%s\":%s' %(k, str(v)) for k, v in d.iteritems() )) for d in nodes )
+fo.write('  \"nodes\":[\n')
 fo.write( res )
-fo.write('  ],\n');
+fo.write('\n  ],\n');
 
 # edgep
-fo.write('  edgep[\n')
-redgep = ','.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}\n' % (k[0],k[1],v) ) for k,v in edgep.iteritems() )
+fo.write('  \"edgep\":[\n')
+redgep = ',\n'.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}' % (k[0],k[1],v) ) for k,v in edgep.iteritems() )
 fo.write( redgep )
-fo.write('  ],\n');
+fo.write('\n  ],\n');
 
 # edgep
-fo.write('  edgen[\n')
-redgen = ','.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}\n' % (k[0],k[1],v) ) for k,v in edgen.iteritems() )
+fo.write('  \"edgen\"[\n')
+redgen = ',\n'.join( ('    {\"source\":%d, \"target\":%d, \"value\":%f}' % (k[0],k[1],v) ) for k,v in edgen.iteritems() )
 fo.write( redgen )
 fo.write('  ]\n');
 
 fo.write('}\n');
+
 fo.close()
