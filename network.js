@@ -2,7 +2,7 @@
 // no existing data yet, use TODO to mark things to be done
 
 var width = 860;
-var height = 700;
+var height = 800;
 
 var color = d3.scale.category20();
 var colorList = [];
@@ -30,16 +30,15 @@ var svg = d3.select("#netgraph").append("svg")
 
 var link = svg.selectAll(".link");
 var node = svg.selectAll(".node");
-
 //---------tool tips------------
 var tooltip = d3.tip()
     .attr("class", "d3-tip")
     .offset( [-10, 0] )
     .html( function( d ){
         var content = "<span>" + "" + d.title + "</span></br></br>";
-        content += "<span>" + "Rating: " + d.avgRating +"</span></br></br>";
-        content += "<span>" + "Director: " + d.director +"</span>";
-
+        content += "<span>" + "Rotten Tomato Rating: " + d.rtAvgRating +"</span></br></br>";
+        content += "<span>" + "Rotten Tomato Popularity: " + d.rtNumReview +"</span></br></br>";
+        content += "<span>" + "Director: " + d.director +"</span>";        
         return content;
     } );
 svg.call( tooltip )
@@ -94,7 +93,7 @@ d3.json( "data/movie.json", function(error, gdata) {
             .on("mouseout", hideNodeInfo )
             .on("dblclick", dblClickNode );
         node
-            .attr( "r", 5 )
+            .attr( "r", function(d) { return helper.getsize(d); } )
             .style("fill", function(d) { return colorList[ d.gid ]; });
         if( !is_init ) return;
         // the following only needs to be called during initialization
@@ -108,6 +107,13 @@ d3.json( "data/movie.json", function(error, gdata) {
                 force.stop();
                 update( false );
             });
+
+        d3.selectAll("#size_select")
+            .on( "change", function (){
+                helper.sizetype = this.value;
+                force.stop();
+                update( false );
+            });
     }
-    update( true );     
+    update( true );
 }); 

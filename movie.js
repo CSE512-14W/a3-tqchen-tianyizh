@@ -4,12 +4,12 @@
 // class of movie data 
 function mhelper( graph ){
     this.graph = graph;
-    alert( graph )
     this.rate_min = 0;
     this.rate_max = 10;
     this.fgroup   = 0;
     this.maxknn   = 2;
     this.knntype  = 'Pearson';
+    this.sizetype = 'rtNumReview';
 }
 
 mhelper.prototype = {
@@ -23,6 +23,13 @@ mhelper.prototype = {
     isFiltered: function( d ){
         if( this.chk_fgroup( d ) ) return true;
         return false;
+    },
+    getsize: function( d ){
+        if( this.sizetype == 'rtNumReview' ){
+            return Math.sqrt( d.rtNumReview ) * 0.7;
+        }else{
+            return d.rtAvgRating;
+        }
     },
     // get a filtered graph
     getgraph: function(){

@@ -10,16 +10,22 @@
     <header>
     <h1>Similar Movie Networks: beta, no data feedin yet </h1>
     </header>
-    
-    <div id="knn_selection" class="selecter">
-      <h3>Similarity Type</h3>
-      <select id="knn_select">
-        <option value="Pearson">Pearson</option>
-        <option value="Jaccard">Jaccard</option>
-      </select>
+    <div id="selecters">
+      <div id="knn_selection" class="selecter">
+        <h3>Similarity Type</h3>
+        <select id="knn_select">
+          <option value="Pearson" selected>Pearson</option>
+          <option value="Jaccard">Jaccard</option>
+        </select>
       </div>
-      
-          
+      <div id="size_selection" class="selecter">
+        <h3>Size of the Nodes</h3>
+        <select id="size_select">
+          <option value="rtNumReview" selected>Popularity</option>
+          <option value="rtAvgRating">Rating</option>
+        </select>
+      </div>
+    </div>
     <div id="generelegend"></dev>
     </div>
 
