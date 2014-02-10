@@ -73,6 +73,9 @@ var dblClickNode = function( d ){
     d.py = d.y = height / 2;
     force.start();
 }
+// brush for range
+var marginRate = {top: 20, right: 10, bottom: 20, left: 10};
+var brushRate = new brushSlider( marginRate, 200, 60, "#rate_brush", [ 0, 10] );
 
 // brush adapted from  from example in 
 var xKNN = d3.scale.linear()

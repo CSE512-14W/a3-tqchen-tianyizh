@@ -8,7 +8,7 @@ function mhelper( graph ){
     this.rate_max = 10;
     this.fgroup   = 0;
     this.maxknn   = 2;
-    this.knntype  = 'Pearson';
+    this.knntype  = 'Jaccard';
     this.sizetype = 'rtNumReview';
     this.gmap = {}
     for( var i = 0; i < graph.genre.length; i ++ ){

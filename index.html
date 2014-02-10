@@ -14,8 +14,8 @@
       <div id="knn_selection" class="selecter">
         <h3>Similarity Type</h3>
         <select id="knn_select">
-          <option value="Pearson" selected>Pearson</option>
-          <option value="Jaccard">Jaccard</option>
+          <option value="Jaccard" selected>Jaccard</option>
+          <option value="Pearson">Pearson</option>
         </select>
       </div>
       <div id="size_selection" class="selecter">
@@ -30,6 +30,8 @@
     </div>
     <div id="knn_brush">      
     </div>
+    <div id="rate_brush">      
+    </div>
 
     <div id="main" role="main">
       <div id="netgraph"></div>
@@ -38,6 +40,7 @@
   <script src="http://d3js.org/d3.v3.min.js"></script> 
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="movie.js"></script>
+  <script src="brush.js"></script>
   <script src="network.js"></script>
 </body>
 </html>
