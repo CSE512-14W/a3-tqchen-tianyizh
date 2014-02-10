@@ -57,19 +57,18 @@ var dblClickNode = function( d ){
 
 d3.json( "data/miserable.json", function(error, gdata) {
     var helper = new mhelper( gdata );    
-    var update = function(){
+
+    var update = function( is_init ){
         graph = helper.getgraph();
         force
             .nodes( graph.nodes )
             .links( graph.links )
-            .start();
         var link = svg.selectAll(".link")
             .data( graph.links );
         link.exit().remove();
         link = link
             .enter().append("line")
             .attr( "class", "link" );
-
         var node = svg.selectAll(".node")
             .data( graph.nodes );
         node.exit().remove();
@@ -79,7 +78,10 @@ d3.json( "data/miserable.json", function(error, gdata) {
             .attr( "r", 5 )
             .style("fill", function(d) { return colorList[ d.group ]; })
             .call( force.drag );
-               
+
+        force.start();
+        if( !is_init ) return;
+        // the following only needs to be called during initialization
         // start show the graph
         force.on("tick", function() {
             link.attr("x1", function(d) { return d.source.x; })
@@ -95,7 +97,13 @@ d3.json( "data/miserable.json", function(error, gdata) {
         node.on("mouseover", showNodeInfo )
             .on("mouseout", hideNodeInfo )
             .on("dblclick", dblClickNode );
-    };        
-
-    update();
+        // genere change
+        d3.selectAll("#genre_select")
+            .on( "change", function (){
+                helper.set_fgroup( parseInt( this.value ) );
+                force.stop();
+                update( false );
+            });
+    }
+    update( true );     
 }); 

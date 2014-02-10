@@ -6,15 +6,24 @@ function mhelper( graph ){
     this.graph = graph;
     this.rate_min = 0;
     this.rate_max = 10;
-    this.fgroup   = 8;
+    this.fgroup   = 2;
 }
 
 mhelper.prototype = {
+    set_fgroup: function( r ){
+        this.fgroup = r;
+    },
+    chk_fgroup: function( d ){
+        if( this.fgroup == 0 ) return false;
+        return d.group != this.fgroup;
+    },
     isFiltered: function( d ){
-        return d.group == this.fgroup;
+        if( this.chk_fgroup( d ) ) return true;
+        return false;
     },
     // get a filtered graph
     getgraph: function(){
+        return this.graph;
         var nodes = this.graph.nodes;
         var res = { "nodes":[], "links":[] };
         var nmap = {}
@@ -24,7 +33,7 @@ mhelper.prototype = {
             if( this.isFiltered( nodes[i] ) ) continue;
             // add data to map
             nmap[ i ] =  ncnt; 
-            res.nodes[ ncnt ] = nodes[i];
+            res.nodes[ ncnt ] = eval(uneval(nodes[i]));
             ncnt ++;  
         }
                 
