@@ -38,6 +38,7 @@ var tooltip = d3.tip()
     .html( function( d ){
         var content = "<span>" + "Director: " + d.name + "</span></br></br>";
         content += "<span>" + "Rating: " + d.group +"</span>";
+        content += "<span>" + "Color: " + colorList[d.group] +"</span>";
         return content;
     } );
 svg.call( tooltip )
