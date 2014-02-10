@@ -3,6 +3,8 @@
 
 var width = 860;
 var height = 800;
+var barWidth = 90;
+var barHeight = 20;
 
 var color = d3.scale.category20();
 var colorList = [];
@@ -50,6 +52,11 @@ var hideNodeInfo = function( d, i ){
     tooltip.hide(d,i);
 };
 
+// legend for genre
+var legend = d3.select("#genre_legend").append("svg")
+    .attr("width", barWidth*2);
+var bar = legend.selectAll('g');
+
 //------------------------------------
 // user click, mark one node as fixed
 //------------------------------------
@@ -95,10 +102,43 @@ d3.json( "data/movie.json", function(error, gdata) {
         node
             .attr( "r", function(d) { return helper.getsize(d); } )
             .style("fill", function(d) { return colorList[ d.gid ]; });
+
+        // legend
+        legend.attr("height", barHeight * helper.num_genre()+10 );
+        bar = bar
+            .data( helper.list_genre() );    
+        bar.exit().remove();
+
+        var barx = bar.enter().append("g");
+        barx
+            .attr("transform", function(d, i) { return "translate(0," + (i * barHeight+4) + ")"; })
+            .append("rect")
+            .on( "click", function( d ){
+                helper.click_genre(d);
+                force.stop();
+                update( false );
+            })
+            .attr("width", barWidth )
+            .attr("height", barHeight - 1.5 )
+        bar
+            .style("fill", function(d){ return colorList[d.gid]; } )
+            .style("fill-opacity", function(d){ return helper.opacity_genre( d ); } );
+        barx
+            .append("text")
+            .on( "click", function( d ){
+                helper.click_genre(d);                
+                force.stop();
+                update( false );            
+            })
+            .attr("x", function(d) { return barWidth+2; })
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name; });
+
         if( !is_init ) return;
+
         // the following only needs to be called during initialization
-        // start show the graph
-                 
+        // start show the graph                 
         // add event listeners
         // genere change
         d3.selectAll("#knn_select")

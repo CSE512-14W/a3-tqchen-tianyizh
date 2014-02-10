@@ -8,6 +8,11 @@
   stroke-opacity: .6;
   stroke-width: 1.5px;
 }
+.text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
 
 /* d3 tip style from http://bl.ocks.org/Caged/6476579 */
 .d3-tip {

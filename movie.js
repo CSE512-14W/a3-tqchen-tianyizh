@@ -10,6 +10,11 @@ function mhelper( graph ){
     this.maxknn   = 2;
     this.knntype  = 'Pearson';
     this.sizetype = 'rtNumReview';
+    this.gmap = {}
+    for( var i = 0; i < graph.genre.length; i ++ ){
+        this.graph.genre[i].selected = true;
+        this.gmap[ graph.genre[i].gid ] = true;
+    }
 }
 
 mhelper.prototype = {
@@ -17,12 +22,30 @@ mhelper.prototype = {
         this.fgroup = r;
     },
     chk_fgroup: function( d ){
-        if( this.fgroup == 0 ) return false;
-        return d.gid != this.fgroup;
+        return !this.gmap[ d.gid ];
     },
     isFiltered: function( d ){
         if( this.chk_fgroup( d ) ) return true;
         return false;
+    },
+    num_genre: function(){
+        return this.graph.genre.length;
+    },
+    list_genre: function(){
+        var res = [];
+        var genre = this.graph.genre;
+        for( var i = 0; i < genre.length; i ++ ){
+            res.push( {"name": genre[i].name, "gid":genre[i].gid, "selected" : this.gmap[genre[i].gid] } );
+        }
+        return res;
+    },
+    click_genre: function( d ){
+        this.gmap[ d.gid ] = !this.gmap[ d.gid ];     
+        d.selected = this.gmap[ d.gid ];
+    },
+    opacity_genre: function( d ){
+        if( d.selected ) return 1;
+        else return 0.2;
     },
     getsize: function( d ){
         if( this.sizetype == 'rtNumReview' ){
