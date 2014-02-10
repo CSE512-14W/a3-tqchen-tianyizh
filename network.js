@@ -5,8 +5,11 @@ var width = 860;
 var height = 800;
 var barWidth = 90;
 var barHeight = 20;
-var brushKNNWidth = 90;
-var brushKNNHeight = 20;
+
+var marginKNN = {top: 20, right: 10, bottom: 20, left: 10};
+var brushKNNWidth = 350 - marginKNN.left - marginKNN.right;
+var brushKNNHeight = 50 - marginKNN.top - marginKNN.bottom;
+
 var color = d3.scale.category20();
 var colorList = [];
 for( var i = 0; i < 20; i ++ ){
@@ -71,34 +74,49 @@ var dblClickNode = function( d ){
     force.start();
 }
 
-// brush 
-var xknn = d3.scale.linear()
-    .domain([0, 50])
+// brush adapted from  from example in 
+var xKNN = d3.scale.linear()
+    .domain([0, 10])
     .range([0, brushKNNWidth])
     .clamp(true);
 var brushKNN = d3.svg.brush()
-    .x(xknn)
+    .x(xKNN)
     .extent([0, 0]);
-
 var brushKNNGraph = d3.select("#knn_brush").append("svg")
-    .attr("width", brushKNNWidth )
-    .attr("height", brushKNNHeight )
+    .attr("width", brushKNNWidth + marginKNN.left + marginKNN.right )
+    .attr("height", brushKNNHeight + marginKNN.top+ marginKNN.bottom )
     .append("g")
-    .attr("transform", "translate( 2,2 )");
+    .attr("transform", "translate(" + marginKNN.left + "," + marginKNN.top + ")");
 
 brushKNNGraph.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + brushKNNHeight/ 2 + ")")
     .call( d3.svg.axis()
-           .scale(xknn)
+           .scale(xKNN)
            .orient("bottom")
            .tickFormat(function(d) { return d; })
            .tickSize(0)
            .tickPadding(12));
-var sliderKNN = svg.append("g")
+
+var sliderKNN = brushKNNGraph.append("g")
     .attr("class", "slider")
     .call(brushKNN);
+sliderKNN.selectAll(".extent,.resize")
+    .remove();
+sliderKNN.select(".background")
+    .attr("height", brushKNNHeight );
 
+var handleKNN = sliderKNN.append("circle")
+    .attr("class", "handle")
+    .attr("transform", "translate("+ brushKNNHeight  + ")")
+    .attr("r", 9);
+
+sliderKNN
+    .call(brushKNN.event)
+    .transition() 
+    .duration(750)
+    .call(brushKNN.extent([1, 1]))
+    .call(brushKNN.event);
 
 //------------------------------------
 // helper functions
@@ -138,7 +156,6 @@ d3.json( "data/movie.json", function(error, gdata) {
         bar = bar
             .data( helper.list_genre() );    
         bar.exit().remove();
-
         var barx = bar.enter().append("g");
         barx
             .attr("transform", function(d, i) { return "translate(0," + (i * barHeight+4) + ")"; })
@@ -165,8 +182,19 @@ d3.json( "data/movie.json", function(error, gdata) {
             .attr("dy", ".35em")
             .text(function(d) { return d.name; });
 
-        if( !is_init ) return;
+        brushKNN.on( "brush",
+                     function () {
+                         var value = brushKNN.extent()[0];                
+                         if (d3.event.sourceEvent) { 
+                             value = xKNN.invert(d3.mouse(this)[0]);
+                             brushKNN.extent([value, value]);
+                         }
+                         handleKNN.attr("cx", xKNN(value));
+                     });
 
+        if( !is_init ) return;
+       
+        
         // the following only needs to be called during initialization
         // start show the graph                 
         // add event listeners
