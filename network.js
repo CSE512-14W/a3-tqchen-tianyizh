@@ -88,7 +88,7 @@ d3.json( "data/miserable.json", function(error, gdata) {
             .enter().append("circle")
             .attr( "class", "node" )
             .attr( "r", 5 )
-            .style("fill", function(d) { return colorList[ d.group ]; })
+            .style("fill", function(d) { return colorList[ parseInt(d.group) ]; })
             .call( force.drag )
             .on("mouseover", showNodeInfo )
             .on("mouseout", hideNodeInfo )
