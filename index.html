@@ -39,7 +39,7 @@
         
 
         <div id="knn_selection" class="selecter">
-          <h3>Similarity Type</h3>
+          <h4>Similarity Type</h4>
           <select id="knn_select">
             <option value="Pearson" selected>Pearson</option>
             <option value="Jaccard">Jaccard</option>
@@ -48,7 +48,7 @@
         
 
         <div id="size_selection" class="selecter">
-          <h3>Size of the Nodes</h3>
+          <h4>Size of the Nodes</h4>
           <select id="size_select">
             <option value="rtNumReview" selected>Popularity</option>
             <option value="rtAvgRating">Rating</option>
@@ -61,14 +61,19 @@
       <div id="genre_legend">      
       </div>
       <div id="knn_brush">      
+        <h4>Edge Density:k of k-Nearest Neighbors</h4>
       </div>
 
+      <div id="rate_brush">
+        <h4>Filter by Rating Range</h4>
+      </div>
     </div>
 
 
   <script src="http://d3js.org/d3.v3.min.js"></script> 
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="movie.js"></script>
+  <script src="brush.js"></script>
   <script src="network.js"></script>
 <script>
 
