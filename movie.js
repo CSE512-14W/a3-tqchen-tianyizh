@@ -28,6 +28,12 @@ mhelper.prototype = {
         if( this.chk_fgroup( d ) ) return true;
         return false;
     },
+    updateknn: function( v ){
+        this.maxknn = v;
+    },
+    getcharge: function( d ){
+        return -100*this.maxknn;
+    },
     num_genre: function(){
         return this.graph.genre.length;
     },

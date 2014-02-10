@@ -7,7 +7,7 @@ var barWidth = 90;
 var barHeight = 20;
 
 var marginKNN = {top: 20, right: 10, bottom: 20, left: 10};
-var brushKNNWidth = 350 - marginKNN.left - marginKNN.right;
+var brushKNNWidth = 250 - marginKNN.left - marginKNN.right;
 var brushKNNHeight = 50 - marginKNN.top - marginKNN.bottom;
 
 var color = d3.scale.category20();
@@ -17,7 +17,7 @@ for( var i = 0; i < 20; i ++ ){
 }
 
 var force = d3.layout.force()
-    .charge( function (d){ if( d.fixed ) return -2000; else return -200; } )
+    .charge( function (d){ return -150; } )
     .linkDistance( 30 )
     .size( [width, height] )
     .on("tick", function() {
@@ -76,7 +76,7 @@ var dblClickNode = function( d ){
 
 // brush adapted from  from example in 
 var xKNN = d3.scale.linear()
-    .domain([0, 10])
+    .domain([1,10])
     .range([0, brushKNNWidth])
     .clamp(true);
 var brushKNN = d3.svg.brush()
@@ -115,7 +115,7 @@ sliderKNN
     .call(brushKNN.event)
     .transition() 
     .duration(750)
-    .call(brushKNN.extent([1, 1]))
+    .call(brushKNN.extent([2, 2]))
     .call(brushKNN.event);
 
 //------------------------------------
@@ -130,6 +130,7 @@ d3.json( "data/movie.json", function(error, gdata) {
         force
             .nodes( graph.nodes )
             .links( graph.links )
+            .charge( function (d){ return helper.getcharge(d); } )
             .start()
         link = link.data( graph.links );
         
@@ -182,18 +183,20 @@ d3.json( "data/movie.json", function(error, gdata) {
             .attr("dy", ".35em")
             .text(function(d) { return d.name; });
 
+        if( !is_init ) return;
+       
         brushKNN.on( "brush",
                      function () {
                          var value = brushKNN.extent()[0];                
                          if (d3.event.sourceEvent) { 
                              value = xKNN.invert(d3.mouse(this)[0]);
                              brushKNN.extent([value, value]);
-                         }
+                         }                         
                          handleKNN.attr("cx", xKNN(value));
+                         helper.updateknn( value );
+                         force.stop();
+                         update( false );                   
                      });
-
-        if( !is_init ) return;
-       
         
         // the following only needs to be called during initialization
         // start show the graph                 
