@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Movie Relation Network:Beta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+
+<style type="text/css">
+  
+.container div{
+  position: absolute;
+}
+
+.c2 div{
+  z-index: 99;
+}
+
+</style>
+
+<body>
+  <div id="container" class="container">
+    
+    <header>
+    <h1>Similar Movie Networks</h1>
+    </header>
+
+    
+
+    <div id="main" role="main">
+      <div id="netgraph"></div>
+    </div>
+  </div> 
+
+
+<div class="c2">
+      <div id="selecters">
+        
+
+        <div id="knn_selection" class="selecter">
+          <h3>Similarity Type</h3>
+          <select id="knn_select">
+            <option value="Pearson" selected>Pearson</option>
+            <option value="Jaccard">Jaccard</option>
+          </select>
+        </div>
+        
+
+        <div id="size_selection" class="selecter">
+          <h3>Size of the Nodes</h3>
+          <select id="size_select">
+            <option value="rtNumReview" selected>Popularity</option>
+            <option value="rtAvgRating">Rating</option>
+          </select>
+        </div>
+      
+
+      </div>
+
+      <div id="genre_legend">      
+      </div>
+      <div id="knn_brush">      
+      </div>
+
+    </div>
+
+
+  <script src="http://d3js.org/d3.v3.min.js"></script> 
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="movie.js"></script>
+  <script src="network.js"></script>
+<script>
+
+  $(".c2").offset({left:860});
+
+</script>
+
+</body>
+</html>
