@@ -53,10 +53,9 @@ def loadmeta():
             continue
         dat = meta[ mid ]
         dat["title"] = '\"'+arr[1].strip()+'\"'
-        dat["year" ] = arr[5].strip()
-        
-        #dat["rtAvgRating"] = "\'"+arr[7].strip()+'\"'
-        #dat["rtNumReview"] = "\'"+arr[8].strip()+"\'"
+        dat["year" ] = arr[5].strip()        
+        dat["rtAvgRating"] = arr[7].strip()
+        dat["rtNumReview"] = arr[8].strip()
         
         if nfield == None:
             print dat
@@ -97,9 +96,22 @@ def loadmeta():
     print 'skip %d movies' % scnt
     return meta, gmap
 
+def check( d ):
+    if 'gid' not in d:
+        return False
+    try:
+        float( d["rtAvgRating"] )
+    except:
+        return False
+    try:
+        float( d["rtNumReview"] )
+    except:
+        return False
+    return True
+
 def remap_meta( meta, topn ):
     fmap = {}
-    res = [ d for d in sorted( meta.values(), key = lambda x: -x['numRating'])  if 'gid' in d ]
+    res = [ d for d in sorted( meta.values(), key = lambda x: -x['numRating'])  if check(d) ]
     for d in res[ 0 : min(topn,len(res)) ]:
         fmap[ d['nid'] ] = d
     return fmap
