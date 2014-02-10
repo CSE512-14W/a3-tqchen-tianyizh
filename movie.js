@@ -32,7 +32,7 @@ mhelper.prototype = {
             if( this.isFiltered( nodes[i] ) ) continue;
             // add data to map
             nmap[ i ] =  ncnt; 
-            res.nodes[ ncnt ] = eval(uneval(nodes[i]));
+            res.nodes[ ncnt ] = nodes[i];
             ncnt ++;  
         }
                 
