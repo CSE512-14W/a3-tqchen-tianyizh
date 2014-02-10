@@ -5,6 +5,11 @@ var width = 860;
 var height = 700;
 
 var color = d3.scale.category20();
+var colorList = [];
+for( var i = 0; i < 20; i ++ ){
+    colorList.push( color(i) );
+}
+
 var force = d3.layout.force()
     .charge( function (d){ if( d.fixed ) return -2000; else return -200; } )
     .linkDistance( 30 )
@@ -20,8 +25,8 @@ var tooltip = d3.tip()
     .attr("class", "d3-tip")
     .offset( [-10, 0] )
     .html( function( d ){
-        var content = "<span>" + "Director: TODO" + "</span></br></br>";
-        content += "<span>" + "Rating: TODO" + "</span>";
+        var content = "<span>" + "Director: " + d.name + "</span></br></br>";
+        content += "<span>" + "Rating: " + d.group +"</span>";
         return content;
     } );
 svg.call( tooltip )
@@ -46,13 +51,18 @@ var dblClickNode = function( d ){
     force.start();
 }
 
-d3.json( "data/miserable.json", function(error, graph) {
+//------------------------------------
+// helper functions
+//------------------------------------
+
+d3.json( "data/miserable.json", function(error, gdata) {
+    var helper = new mhelper( gdata );    
     var update = function(){
+        graph = helper.getgraph();
         force
             .nodes( graph.nodes )
             .links( graph.links )
             .start();
-
         var link = svg.selectAll(".link")
             .data( graph.links );
         link.exit().remove();
@@ -67,7 +77,7 @@ d3.json( "data/miserable.json", function(error, graph) {
             .enter().append("circle")
             .attr( "class", "node" )
             .attr( "r", 5 )
-            .style("fill", function(d) { return color( d.group ); })
+            .style("fill", function(d) { return colorList[ d.group ]; })
             .call( force.drag );
                
         // start show the graph
@@ -85,8 +95,7 @@ d3.json( "data/miserable.json", function(error, graph) {
         node.on("mouseover", showNodeInfo )
             .on("mouseout", hideNodeInfo )
             .on("dblclick", dblClickNode );
-    };    
+    };        
+
     update();
 }); 
-
-
