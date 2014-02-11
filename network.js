@@ -49,12 +49,7 @@ var tooltip = d3.tip()
     } );
 svg.call( tooltip )
 // show detailed text
-var showNodeInfo = function( d, i ){
-    tooltip.show(d,i);
-};
-var hideNodeInfo = function( d, i ){
-    tooltip.hide(d,i);
-};
+
 
 // legend for genre
 var legend = d3.select("#genre_legend").append("svg")
@@ -149,8 +144,14 @@ d3.json( "data/movie.json", function(error, gdata) {
             .enter().append("circle")
             .attr( "class", "node" )
             .call( force.drag )
-            .on("mouseover", showNodeInfo )
-            .on("mouseout", hideNodeInfo )
+            .on("mouseover", function( d, i ){                
+                tooltip.show(d,i);
+                helper.highlight_node( d, node, link );
+            })
+            .on("mouseout", function( d, i ){
+                tooltip.hide(d,i);
+                helper.recover_node( d, node, link );
+            })
             .on("dblclick", dblClickNode );
         node
             .attr( "r", function(d) { return helper.getsize(d); } )
