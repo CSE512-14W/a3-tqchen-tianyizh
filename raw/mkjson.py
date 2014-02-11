@@ -147,8 +147,8 @@ def getknn( fname, fweight, fmap, topn ):
             weight = float( ewt[i+2] )
             if target not in fmap:
                 continue
-            #if source > target:
-            #target, source = source, target
+#            if source > target:
+ #               target, source = source, target
             key = (source, target)
             if key not in edge:
                 edge[ key ] = (ncnt,weight)
@@ -191,7 +191,7 @@ fo.write('\n  ],\n');
 
 nodes = sorted( fmap.values(), key = lambda x: -x['numRating'] ) 
 
-downloadimage( fmap )
+#downloadimage( fmap )
 
 res = ',\n'.join( ('    {%s}' % ','.join( '\"%s\":%s' %(k, str(v)) for k, v in d.iteritems() )) for d in nodes )
 fo.write('  \"nodes\":[\n')
