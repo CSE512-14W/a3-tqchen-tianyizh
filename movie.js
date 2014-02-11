@@ -10,6 +10,8 @@ function mhelper( graph ){
     this.maxknn   = 2;
     this.ratemax = 10;
     this.ratemin = 0;
+    this.popmax   = 240;
+    this.popmin   = 0; 
     this.knntype  = 'Jaccard';
     this.sizetype = 'rtNumReview';
     this.gmap = {}
@@ -28,18 +30,28 @@ mhelper.prototype = {
     },
     chk_rate: function( d ){
         var r = d.rtAvgRating;
-        return r >= d.ratemin && r<= d.ratemax
+        return r < this.ratemin || r> this.ratemax;
+    },
+    chk_pop: function( d ){
+        var r = d.rtNumReview;
+        return r < this.popmin || r> this.popmax;
     },
     isFiltered: function( d ){
         if( this.chk_fgroup( d ) ) return true;
+        if( this.chk_rate( d ) ) return true;
+        if( this.chk_pop( d ) ) return true;
         return false;
     },
     updateknn: function( v ){
         this.maxknn = v;
     },
-    updateratefilter: function( rmin, rmax ){
+    update_ratefilter: function( rmin, rmax ){
         this.ratemin = rmin;
         this.ratemax = rmax;
+    },
+    update_popfilter: function( rmin, rmax ){
+        this.popmin = rmin;
+        this.popmax = rmax;
     },
     getcharge: function( d ){
         return -50*this.maxknn;

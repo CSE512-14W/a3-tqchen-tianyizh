@@ -6,7 +6,7 @@ var height = 700;
 var barWidth = 90;
 var barHeight = 20;
 
-var marginKNN = {top: 20, right: 10, bottom: 20, left: 10};
+var marginKNN = {top: 10, right: 10, bottom: 20, left: 10};
 var brushKNNWidth = 250 - marginKNN.left - marginKNN.right;
 var brushKNNHeight = 50 - marginKNN.top - marginKNN.bottom;
 
@@ -74,8 +74,9 @@ var dblClickNode = function( d ){
     force.start();
 }
 // brush for range
-var marginRate = {top: 20, right: 10, bottom: 20, left: 10};
-var brushRate = new brushSlider( marginRate, 200, 60, "#rate_brush", [ 0, 10] );
+var marginRate = {top: 2, right: 10, bottom: 20, left: 10};
+var brushRate = new brushSlider( marginRate, 200, 50, "#rate_brush", [ 0, 10] );
+var brushPop  = new brushSlider( marginRate, 350, 50, "#pop_brush", [ 0, 250] );
 
 // brush adapted from  from example in 
 var xKNN = d3.scale.linear()
@@ -200,6 +201,25 @@ d3.json( "data/movie.json", function(error, gdata) {
                          force.stop();
                          update( false );                   
                      });
+        brushRate.brush.on( "brush", 
+                            function () {
+                                var brush = brushRate.brush;                                
+                                if (!d3.event.sourceEvent) return; 
+                                var extent = brush.extent();
+                                helper.update_ratefilter( extent[0], extent[1] );
+                                force.stop();
+                                update( false );                            
+                            });
+
+        brushPop.brush.on( "brush", 
+                            function () {
+                                var brush = brushPop.brush;                                
+                                if (!d3.event.sourceEvent) return; 
+                                var extent = brush.extent();
+                                helper.update_popfilter( extent[0], extent[1] );
+                                force.stop();
+                                update( false );                            
+                            });
         
         // the following only needs to be called during initialization
         // start show the graph                 
