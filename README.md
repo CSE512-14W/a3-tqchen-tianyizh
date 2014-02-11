@@ -25,6 +25,8 @@ Instead of allowing users to select a single genre of movies displaying in the g
 
 Due to the limit of space, we only display the movie name, rotten tomatoe ratings, rotten tomatoe popularity, and director as the meta information for each movie in the floating window. 
 
+Instead of filtering by minimum average rating or popularity, we give more freedom to users to select arbitrary range of average rating or popularity to display in the graph.
+
 Development Process
 
 The visualization development started with discussion about how to develop interactive visualization tool to aid movie recommendation. Inspired from the visualization of social networks, we think it is interesting to show tens of thousands of movies as a network graph and encode their similarities by the edges in the graph. Then we tried different kinds of similarities measures estimated from ratings and find out they work pretty promising for recommendation. But the problem is how to show the recommendation result in the large graph.Thus we designed the "mouse hover, auto move, highlight, and floating window" style to show the recommended most similar movies as well as the movie details based on the movie user clicks. After this, we note that the users might expect to rule out some movies before selecting, so we make the system allowing users to at first define the minimum average rating and popularity of displayed movie, as well as the number of recommended movies. In addition, we allow the users to select a subset of movie genres to display in the graph.
@@ -41,6 +43,3 @@ Tianyi Zhou:
 -Major contribution on data proprocessing: 9 hours.
 -Major contribution to sketching storyboard & system design: 6 hours.
 -Major contribution on writeups: 5 hours.
-
-
-
