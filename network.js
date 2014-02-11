@@ -135,8 +135,9 @@ d3.json( "data/movie.json", function(error, gdata) {
             .start()
         link = link.data( graph.links );        
         link.exit().remove();
-        node = node.data( graph.nodes );        
+        node = node.data( [] );
         node.exit().remove();
+        node = node.data( graph.nodes );        
 
         link.enter().append("line")
             .attr( "class", "link" );
