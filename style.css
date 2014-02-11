@@ -22,6 +22,7 @@
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 2px;
+  opacity: 0.5;
 }
 
 /* Creates a small triangle extender for the tooltip */
@@ -35,7 +36,6 @@
   content: "\25BC";
   position: absolute;
   text-align: center;
-  opacity: 0.5;
 }
 
 /* Style northward tooltips differently */
