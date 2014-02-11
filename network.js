@@ -133,15 +133,14 @@ d3.json( "data/movie.json", function(error, gdata) {
             .links( graph.links )
             .charge( function (d){ return helper.getcharge(d); } )
             .start()
-        link = link.data( graph.links );
-        
+        link = link.data( graph.links );        
         link.exit().remove();
+        node = node.data( graph.nodes );        
+        node.exit().remove();
+
         link.enter().append("line")
             .attr( "class", "link" );
     
-        node = node.data( graph.nodes );
-        
-        node.exit().remove();
         node
             .enter().append("circle")
             .attr( "class", "node" )

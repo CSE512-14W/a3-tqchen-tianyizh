@@ -46,12 +46,6 @@ mhelper.prototype = {
         this.maxknn = v;
     },
     highlight_node: function( v, node, link ){
-        node.style( "fill-opacity", 
-                    function(d) {  
-                        if( d.nid == v.nid ) return 1.0;
-                        else return 0.2;
-                    });
-
         link.style( "fill-opacity", 
                     function(d) {  
                         if( d.x1 == v.nid|| d.x2 == v.nid ){
@@ -66,11 +60,16 @@ mhelper.prototype = {
                         }
                         else return 0.0;
                     });
+        node.style( "fill-opacity", 
+                    function(d) {  
+                        if( d.nid == v.nid ) return 1.0;
+                        else return 0.2;
+                    });
     },
     recover_node: function( v, node, link ){
-        node.style( "fill-opacity", 1 );
         link.style( "stroke-width", 1.5 );
-    },    
+        node.style( "fill-opacity", 1 );
+    },
     update_ratefilter: function( rmin, rmax ){
         this.ratemin = rmin;
         this.ratemax = rmax;
@@ -138,7 +137,6 @@ mhelper.prototype = {
                                  "x1": links[i].source, "x2":links[i].target } );                
             }
         }
-
         return res;
     }
 }; 
