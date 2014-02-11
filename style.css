@@ -19,10 +19,9 @@
   line-height: 1;
   font-weight: bold;
   padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #111;
+  background: rgba(20, 20, 20, 0.5);
+  color: #fff;
   border-radius: 2px;
-  opacity: 0.5;
 }
 
 /* Creates a small triangle extender for the tooltip */
