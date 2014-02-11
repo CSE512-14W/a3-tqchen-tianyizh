@@ -2,7 +2,7 @@ Team Members:
 Tianqi Chen: tqchen@uw.edu
 Tianyi Zhou: tianyizh@uw.edu
 
-Project Name：MovieNet - MovieNet: Interactive Visualization of Movie Similarity Graph
+Project Name：MovieNet - Interactive Visualization of Movie Similarity Graph
 
 The data domain for our visualization a dataset combining the 10000054 ratings of 10681 movies by 71567 users from MovieLens 10M dataset and the meta information of those movies from HetRec 2011 dataset. We visualized movies as a graph of networks. The most similar movies of a movie are visualized by the links among them. The size of links encodes the magnitudes of similarities. 
 
