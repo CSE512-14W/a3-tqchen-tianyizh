@@ -1,5 +1,6 @@
 import sys
 import json
+import os
 import urllib
 # mk json data from the hecrec dataset
 
@@ -119,6 +120,13 @@ def remap_meta( meta, topn ):
         fmap[ d['nid'] ] = d
     return fmap
 
+def downloadimage( fmap ):
+    for d in fmap.values():
+        cmd = 'wget %s -O pic/%d.jpg' % ( d['imgURL'], d['nid'] );
+        print cmd
+        os.system( cmd );
+        
+
 def getknn( fname, fweight, fmap, topn ):
     edge = {}
     fi = open( fname, 'r' ).read().split('\r')
@@ -182,6 +190,9 @@ fo.write( resg )
 fo.write('\n  ],\n');
 
 nodes = sorted( fmap.values(), key = lambda x: -x['numRating'] ) 
+
+downloadimage( fmap )
+
 res = ',\n'.join( ('    {%s}' % ','.join( '\"%s\":%s' %(k, str(v)) for k, v in d.iteritems() )) for d in nodes )
 fo.write('  \"nodes\":[\n')
 fo.write( res )

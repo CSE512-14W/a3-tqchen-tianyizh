@@ -45,7 +45,7 @@ var tooltip = d3.tip()
         content += "<span>" + "Rotten Tomato Rating: " + d.rtAvgRating +"</span></br></br>";
         content += "<span>" + "Rotten Tomato Popularity: " + d.rtNumReview +"</span></br></br>";
         content += "<span>" + "Director: " + d.director +"</span></br></br>";        
-        content +="<img src=\""+d.imgURL+"\"> </img>";
+        content +="<img src=\"raw/pic/"+d.nid+".jpg\"> </img>";
         return content;
     } );
 svg.call( tooltip )
