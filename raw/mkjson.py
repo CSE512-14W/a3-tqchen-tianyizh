@@ -146,7 +146,7 @@ def getknn( fname, fweight, fmap, topn ):
                 break
     return edge
 
-topnode = 150;
+topnode = 200;
 topedge = 50;
 
 meta, gmap = loadmeta()
