@@ -35,6 +35,7 @@
   content: "\25BC";
   position: absolute;
   text-align: center;
+  opacity: 0.5;
 }
 
 /* Style northward tooltips differently */
