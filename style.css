@@ -19,8 +19,9 @@
   line-height: 1;
   font-weight: bold;
   padding: 12px;
-  background: rgba(0.2, 0.2, 0.2, 0.1);
+  background: rgba(20, 20, 20, 0.4);
   color: #fff;
+  opacity:0.4;
   border-radius: 2px;
 }
 
