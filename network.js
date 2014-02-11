@@ -44,7 +44,8 @@ var tooltip = d3.tip()
         var content = "<span>" + "" + d.title + "</span></br></br>";
         content += "<span>" + "Rotten Tomato Rating: " + d.rtAvgRating +"</span></br></br>";
         content += "<span>" + "Rotten Tomato Popularity: " + d.rtNumReview +"</span></br></br>";
-        content += "<span>" + "Director: " + d.director +"</span>";        
+        content += "<span>" + "Director: " + d.director +"</span></br></br>";        
+        content +="<img src=\""+d.imgURL+"\"> </img>";
         return content;
     } );
 svg.call( tooltip )
@@ -68,6 +69,7 @@ var dblClickNode = function( d ){
     d.py = d.y = height / 2;
     force.start();
 }
+
 // brush for range
 var marginRate = {top: 2, right: 10, bottom: 20, left: 10};
 var brushRate = new brushSlider( marginRate, 200, 50, "#rate_brush", [ 0, 10] );

@@ -1,4 +1,6 @@
 import sys
+import json
+import urllib
 # mk json data from the hecrec dataset
 
 
@@ -56,7 +58,8 @@ def loadmeta():
         dat["year" ] = arr[5].strip()        
         dat["rtAvgRating"] = arr[7].strip()
         dat["rtNumReview"] = arr[8].strip()
-        
+        dat["imgURL"] = '\"'+arr[4].strip()+'\"'
+
         if nfield == None:
             print dat
             nfield = len(arr)
